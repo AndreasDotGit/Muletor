@@ -48,7 +48,7 @@ def __appendTransfromAfterSelect(fileName):
                     tMessage = let.Element('{http://www.mulesoft.org/schema/mule/ee/core}message')
                     if nameResSelect == 'payload':
                         tPayload = let.Element('{http://www.mulesoft.org/schema/mule/ee/core}set-payload')
-                        tPayload.text = let.CDATA('%dw 2.0\noutput application/json\n---\npayload map $')
+                        tPayload.text = let.CDATA('%dw 2.0\noutput application/java\n---\npayload map $')
                         tMessage.append(tPayload)
                         transfrom.append(tMessage)
                         print('\t\t' + Fore.BLACK + Back.GREEN + 'Transfrom message creato per il payload' + Fore.RESET + Back.RESET)
@@ -57,7 +57,7 @@ def __appendTransfromAfterSelect(fileName):
                         tVars = let.Element('{http://www.mulesoft.org/schema/mule/ee/core}variables')
                         tVar = let.Element('{http://www.mulesoft.org/schema/mule/ee/core}set-variable')
                         tVar.set('variableName', nameResSelect)
-                        tStr = ('%dw 2.0\noutput application/json\n---\nvars.' + nameResSelect + ' map $')
+                        tStr = ('%dw 2.0\noutput application/java\n---\nvars.' + nameResSelect + ' map $')
                         tVar.text= let.CDATA(tStr)
                         tVars.append(tVar)
                         transfrom.append(tVars)
