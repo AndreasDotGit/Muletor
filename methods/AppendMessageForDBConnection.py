@@ -1,17 +1,19 @@
 import xml.etree.ElementTree as ET
 import lxml.etree as let
 import uuid
-from pathlib import Path
 import os
 
 from colorama import Fore, Back, Style
 
-
+nsMule = 'http://www.mulesoft.org/schema/mule/ee/core'
+nsDoc = 'http://www.mulesoft.org/schema/mule/documentation'
+nsFlow = '{http://www.mulesoft.org/schema/mule/core}flow'
+nsDBSelect = '{http://www.mulesoft.org/schema/mule/db}select'
 def __dirControl(srcDir):
     listDir = os.listdir(format(srcDir))
     for content in listDir:
         if '.' in content:
-            if(content != 'pom.xml' and content != 'global.xml'):
+            if(content != 'pom.xml' and content != 'global.xml' and '.xml' in content):
                 print(Fore.BLACK + Back.WHITE + "File trovato:", content + Fore.RESET + Back.RESET)
                 __appendTransfromAfterSelect(srcDir + '\\' + content)
         else:
@@ -21,15 +23,15 @@ def __dirControl(srcDir):
 
 def __appendTransfromAfterSelect(fileName):
     print("FILE", fileName)
-    let.register_namespace('mule', 'http://www.mulesoft.org/schema/mule/ee/core')
-    let.register_namespace('doc', 'http://www.mulesoft.org/schema/mule/documentation')
+    let.register_namespace('mule', nsMule)
+    let.register_namespace('doc', nsDoc)
     tree = let.parse(fileName,parser = let.XMLParser(strip_cdata=False))
     muleRoot = tree.getroot()
     for flow in muleRoot:
-        print('\t' + Fore.BLUE + Back.RESET +"Flusso", flow.attrib['name'] + Fore.RESET + Back.RESET)
-        for element in flow:
-            if element.tag.find('}') != -1:
-                if element.tag.split('}')[1] == 'select':
+        if nsFlow == flow.tag:
+            print('\t' + Fore.BLUE + Back.RESET +"Flusso", flow.attrib['name'] + Fore.RESET + Back.RESET)
+            for element in flow:
+                if element.tag == nsDBSelect:
                     print('\t\t' + Fore.GREEN + Back.RESET + 'SELECT TROVATA' + Fore.RESET)
                     if 'target' in element.attrib:
                         nameResSelect = element.attrib['target']

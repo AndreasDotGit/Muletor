@@ -1,8 +1,7 @@
 from methods import AppendMessageForDBConnection as AMDC
-from colorama import Fore, Back, Style
+from colorama import Fore, Back
 from pathlib import Path
 import os
-import uuid
 
 os.system('cls')
 print('''***************DISCLAIMER***************
@@ -14,7 +13,7 @@ Back.YELLOW + Fore.BLACK + '''\nIl programma funziona solo se la cartella è pos
 '***************DISCLAIMER***************' + Back.RESET + '\n')
 
 while(True):
-    basePath = format(Path().absolute().parents[0]) 
+    basePath = format(Path().absolute().parents[0])
     if 'pom.xml' in os.listdir(format(basePath)):
         print(Back.LIGHTBLUE_EX + Fore.WHITE + '|HOME' + Back.RESET + Fore.RESET)
         print("Azioni disponibili:")
