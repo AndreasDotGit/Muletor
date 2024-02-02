@@ -9,6 +9,7 @@ nsMule = 'http://www.mulesoft.org/schema/mule/ee/core'
 nsDoc = 'http://www.mulesoft.org/schema/mule/documentation'
 nsFlow = '{http://www.mulesoft.org/schema/mule/core}flow'
 nsDBSelect = '{http://www.mulesoft.org/schema/mule/db}select'
+
 def __dirControl(srcDir):
     listDir = os.listdir(format(srcDir))
     for content in listDir:
@@ -25,7 +26,7 @@ def __appendTransfromAfterSelect(fileName):
     print("FILE", fileName)
     let.register_namespace('mule', nsMule)
     let.register_namespace('doc', nsDoc)
-    tree = let.parse(fileName,parser = let.XMLParser(strip_cdata=False))
+    tree = let.parse(fileName,parser = let.XMLParser(strip_cdata=False, remove_comments=True))
     muleRoot = tree.getroot()
     for flow in muleRoot:
         if nsFlow == flow.tag:
