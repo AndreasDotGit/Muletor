@@ -22,7 +22,7 @@ while(True):
         usr = input("Scegli una opzione: ")
         if(usr == '1'):
             os.system('cls')
-            AMDC.AppendMessageForDBConnection(basePath)
+            AMDC.init(basePath)
         elif(usr == '0'):
             os.system('cls')
             exit(1)
