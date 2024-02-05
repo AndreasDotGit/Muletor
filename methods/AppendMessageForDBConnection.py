@@ -13,9 +13,12 @@ tagFlow = '{http://www.mulesoft.org/schema/mule/core}flow'
 tagSubFlow = '{http://www.mulesoft.org/schema/mule/core}sub-flow'
 tagDBSelect = '{http://www.mulesoft.org/schema/mule/db}select'
 
+#COUNTER
+counterAppendedLog = 0
+
 
 def init(pomPath):
-    print(Back.LIGHTBLUE_EX + Fore.WHITE + '|HOME|APPEND SELECT TO DB' + Back.RESET + Fore.RESET)
+    print(Back.LIGHTBLUE_EX + Fore.WHITE + '|HOME|APPEND TRANSFORM MESSAGE TO SELECT DB' + Back.RESET + Fore.RESET)
     print(Fore.YELLOW + '''
 ATTENZIONE: Questa opzione andrà a controllare ogni file xml sotto la cartella \\src\\main\\mule,
 manipolando il codice appendendo una Transform Message dopo ogni palette SELECT trovata in ogni flusso,
@@ -30,6 +33,7 @@ Back.YELLOW +
         if usr == 'Y' or usr == 'y':
             srcDir = format(pomPath)+ '\\src\\main\\mule'
             __dirControl(srcDir)
+            __counterAppendedLog()
             break
         elif usr == 'N' or usr == 'n':
             os.system('cls')
@@ -64,7 +68,7 @@ def __appendTransfromAfterSelect(fileName):
 
 
 def __elemControl(fileName, tree, element, treeLog):
-    ctreeLog = treeLog
+    c_treeLog = treeLog
     if element.tag == tagDBSelect:
         print('\t\t' + Fore.GREEN + 'Path: ' + Fore.RESET + treeLog + ' > ' + Fore.GREEN + 'SELECT TROVATA' + Fore.RESET)
         __selectAction(fileName, tree, element)
@@ -72,7 +76,7 @@ def __elemControl(fileName, tree, element, treeLog):
         for element in element:
             treeLog = treeLog + ' > ' + element.tag.split('}')[1]
             __elemControl(fileName, tree, element, treeLog)
-            treeLog = ctreeLog
+            treeLog = c_treeLog
 
 
 def __selectAction(fileName, tree, element):
@@ -106,4 +110,11 @@ def __selectAction(fileName, tree, element):
         print('\t\t' + Fore.BLACK + Back.GREEN + 'Transfrom message creato per la variabile', nameResSelect + Fore.RESET + Back.RESET)
     element.addnext(transfrom)
     tree.write(fileName, encoding="utf-8", xml_declaration=True, pretty_print=True)
+    global counterAppendedLog
+    counterAppendedLog += 1
     print("\t\tIl file", Fore.CYAN + fileName + Fore.RESET, 'è stato sovrascritto\n')
+
+def __counterAppendedLog():
+    global counterAppendedLog
+    print("Sono stati appesi", Fore.CYAN + str(counterAppendedLog) + Fore.RESET, "Transform Message")
+    counterAppendedLog = 0
