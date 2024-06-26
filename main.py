@@ -1,4 +1,5 @@
 from methods import AppendMessageForDBConnection as AMDC
+from methods import AppendTimeoutForDBConnection as ATDC
 from colorama import Fore, Back
 from pathlib import Path
 import os
@@ -18,11 +19,15 @@ while(True):
         print(Back.LIGHTBLUE_EX + Fore.WHITE + '|HOME' + Back.RESET + Fore.RESET)
         print("Azioni disponibili:")
         print('1) APPEND SELECT TO DB (usato per chiudere le connessioni del DB)')
+        print('2) APPEND TIMEOUT TO DB')
         print('0) Exit\n')
         usr = input("Scegli una opzione: ")
         if(usr == '1'):
             os.system('cls')
             AMDC.init(basePath)
+        if(usr == '2'):
+            os.system('cls')
+            ATDC.init(basePath)
         elif(usr == '0'):
             os.system('cls')
             exit(1)
